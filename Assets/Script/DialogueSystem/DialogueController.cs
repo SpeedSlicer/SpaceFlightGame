@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using System.Linq;
+using System;
+using UnityEngine.InputSystem;
 public class DialogueController : MonoBehaviour
 {
     [SerializeField]
@@ -22,9 +24,17 @@ public class DialogueController : MonoBehaviour
     Sprite[] currentSprites = new Sprite[0];
     string[] currentNames = new string[0];
     bool isOver = true;
+
+    [SerializeField] 
+    RectTransform continueBox;
+    [SerializeField]
+    InputActionReference continueAction;
+    Vector3 inPos, outPos;
     void Start()
     {
         dialoguePanel.SetActive(false);
+        outPos = continueBox.anchoredPosition;
+        inPos = new Vector3(outPos.x - continueBox.rect.width, outPos.y, outPos.z);
     }
 
     void Update()
@@ -51,6 +61,7 @@ public class DialogueController : MonoBehaviour
 
         for (int i = 0; i < currentLines.Length; i++)
         {
+            continueBox.LeanMove(outPos, 0.5f).setEaseInOutSine();
             titleText.text = currentNames[i];
             image.sprite = currentSprites[i];
             spokenText.text = "";
@@ -64,8 +75,8 @@ public class DialogueController : MonoBehaviour
                 else if (a != ' ' && a != '\n')
                     yield return new WaitForSeconds(letterSpeed);
             }
-
-            yield return new WaitForSeconds(waitTime);
+            continueBox.LeanMove(inPos, 0.5f).setEaseInOutSine();
+            yield return new WaitUntil(() => continueAction.action.triggered);
         }
 
         isOver = true;

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,10 +9,12 @@ public class PlayerShip : Ship
     public InputActionReference playerMovementVector;
     InputAction movementAction;
     private Vector2 moveInput;
+
     [Header("Movement Settings")]
     public float acceleration = 10f;
     public float maxSpeed = 5f;
     public float rotationSpeed = 5f;
+
     [Header("Invincibility Settings")]
     public float invincibilityCooldown = 2f;
     bool currentlyInvincible = false;
@@ -21,29 +22,48 @@ public class PlayerShip : Ship
     public GameObject invincibilityEffectObject;
     public float invincibilityTransformExtra = 0.5f;
 
+    public bool canGoBackwards = false;
+
+    [Header("Fuel")]
     public float maxFuel = 5000;
     public float currentFuel = 0;
+
+    [Header("Booster Effect")]
+    public ParticleSystem lBoosterEffect;
+    public ParticleSystem rBoosterEffect;
+
     Animator animator;
 
     bool animationOut = false;
     Vector2 currentScaleInvincibility;
+
+    
+    float leftSmooth = 0f;
+    float rightSmooth = 0f;
+
     void Start()
     {
         base.Start();
+
         animator = gameObject.GetComponent<Animator>();
         currentScaleInvincibility = invincibilityEffectObject.transform.localScale;
         currentFuel = maxFuel;
+
+        
+        lBoosterEffect.Play();
+        rBoosterEffect.Play();
     }
+
     void OnEnable()
     {
         playerMovementVector.action.Enable();
         movementAction = playerMovementVector.action;
     }
+
     void OnDisable()
     {
         playerMovementVector.action.Disable();
     }
-
 
     void Update()
     {
@@ -51,22 +71,33 @@ public class PlayerShip : Ship
         {
             if (!animationOut)
             {
-                invincibilityEffectObject.LeanScale(new Vector2(currentScaleInvincibility.x + invincibilityTransformExtra, currentScaleInvincibility.y + invincibilityTransformExtra), invincibilityAnimationTime / 2);
+                invincibilityEffectObject.LeanScale(
+                    new Vector2(
+                        currentScaleInvincibility.x + invincibilityTransformExtra,
+                        currentScaleInvincibility.y + invincibilityTransformExtra
+                    ),
+                    invincibilityAnimationTime / 2
+                );
+
                 animationOut = true;
                 StartCoroutine(InvincibilityAnimationDown());
             }
         }
     }
+
     void FixedUpdate()
     {
         moveInput = movementAction.ReadValue<Vector2>();
+
         HandleMovement();
         HandleRotation();
     }
+
     private void HandleMovement()
     {
         currentFuel -= Math.Abs(moveInput.y / 50);
-        if (moveInput.magnitude > 0)
+
+        if ((moveInput.magnitude > 0) && (canGoBackwards || moveInput.y > 0))
         {
             rb.AddRelativeForce(new Vector2(0, moveInput.y * acceleration));
             animator.SetBool("Moving", true);
@@ -89,6 +120,7 @@ public class PlayerShip : Ship
             rb.AddTorque(-moveInput.x * rotationSpeed);
         }
     }
+
     public override bool Damage(float amount, string source)
     {
         if (!currentlyInvincible)
@@ -105,25 +137,26 @@ public class PlayerShip : Ship
         }
         return false;
     }
-    public float GetFuel()
-    {
-        return currentFuel;
-    }
-    public float GetMaxFuel()
-    {
-        return maxFuel;
-    }
+
+    public float GetFuel() => currentFuel;
+    public float GetMaxFuel() => maxFuel;
+
     IEnumerator InvincibilityCooldown()
     {
         currentlyInvincible = true;
         yield return new WaitForSeconds(invincibilityCooldown);
         currentlyInvincible = false;
     }
+
     IEnumerator InvincibilityAnimationDown()
     {
         yield return new WaitForSeconds(invincibilityAnimationTime / 2);
-        invincibilityEffectObject.LeanScale(currentScaleInvincibility, invincibilityAnimationTime / 2);
+
+        invincibilityEffectObject.LeanScale(
+            currentScaleInvincibility,
+            invincibilityAnimationTime / 2
+        );
+
         animationOut = false;
     }
-
 }
