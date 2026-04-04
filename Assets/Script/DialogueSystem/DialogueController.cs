@@ -16,11 +16,11 @@ public class DialogueController : MonoBehaviour
     [SerializeField]
     float letterSpeed = 0.3f;
     [SerializeField]
-    float waitTime = 2f;
+    float waitTime = 5f;
 
-    string[] currentLines;
-    Sprite[] currentSprites;
-    string[] currentNames;
+    string[] currentLines = new string[0];
+    Sprite[] currentSprites = new Sprite[0];
+    string[] currentNames = new string[0];
     bool isOver = true;
     void Start()
     {
@@ -36,33 +36,38 @@ public class DialogueController : MonoBehaviour
     {
         return isOver;
     }
-    public void Speak(string[] lines, Sprite[] sprites, string[] names, Sprite sprite)
+    public void Speak(string[] lines, Sprite[] sprites, string[] names)
     {
         currentNames = names;
-        image.sprite = sprite;
         isOver = false;
         currentLines = lines;
         currentSprites = sprites;
         StartCoroutine(TextLoop());
     }
-    
+
     public IEnumerator TextLoop()
     {
         dialoguePanel.SetActive(true);
-        for (int i = 0; i < currentLines.Count(); i++)
+
+        for (int i = 0; i < currentLines.Length; i++)
         {
             titleText.text = currentNames[i];
             image.sprite = currentSprites[i];
+            spokenText.text = "";
+
             foreach (char a in currentLines[i])
             {
                 spokenText.text += a;
-                if (!(a == ' ' || a == '\n'))
-                {
+
+                if (a == '.' || a == ',' || a == '!' || a == '?')
+                    yield return new WaitForSeconds(letterSpeed * 2f);
+                else if (a != ' ' && a != '\n')
                     yield return new WaitForSeconds(letterSpeed);
-                }
-            } 
+            }
+
             yield return new WaitForSeconds(waitTime);
         }
+
         isOver = true;
         dialoguePanel.SetActive(false);
     }

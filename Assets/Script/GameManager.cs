@@ -2,15 +2,23 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField]
+    GameObject interactGO;
     void Start()
     {
-        
+        SetInteractActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
+    }
+    public void SetInteractActive(bool interact)
+    {
+        interactGO.transform.LeanScale(
+            interact ? 
+            new Vector3(0.35f, 0.35f, 0.35f) :
+            new Vector3(0, 0, 0), 
+        0.2f);
     }
 }
