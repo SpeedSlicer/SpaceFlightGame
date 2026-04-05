@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public class QuestManager : MonoBehaviour
+public class EventListenerNode : MonoBehaviour
 {
-    public GameObject playerShip;
-    
     void Start()
     {
         

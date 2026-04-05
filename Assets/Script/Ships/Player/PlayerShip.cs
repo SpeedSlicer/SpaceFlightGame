@@ -28,10 +28,6 @@ public class PlayerShip : Ship
     public float maxFuel = 5000;
     public float currentFuel = 0;
 
-    [Header("Booster Effect")]
-    public ParticleSystem lBoosterEffect;
-    public ParticleSystem rBoosterEffect;
-
     Animator animator;
 
     bool animationOut = false;
@@ -48,10 +44,6 @@ public class PlayerShip : Ship
         animator = gameObject.GetComponent<Animator>();
         currentScaleInvincibility = invincibilityEffectObject.transform.localScale;
         currentFuel = maxFuel;
-
-        
-        lBoosterEffect.Play();
-        rBoosterEffect.Play();
     }
 
     void OnEnable()

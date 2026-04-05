@@ -434,6 +434,7 @@ GameObject:
   - component: {fileID: 64255489}
   - component: {fileID: 64255491}
   - component: {fileID: 64255492}
+  - component: {fileID: 64255493}
   m_Layer: 0
   m_Name: Poly's Platform
   m_TagString: Untagged
@@ -538,7 +539,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.035106182, y: 0.59289086}
+  m_Offset: {x: -0.035106182, y: 0.0025149584}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -548,8 +549,37 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3.863038, y: 2.6538532}
+  m_Size: {x: 3.863038, y: 1.4731014}
   m_EdgeRadius: 0
+--- !u!114 &64255493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64255488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b553f2ff149a81343ad02bfa8a119d26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPC
+  onAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  gm: {fileID: 480320633}
+  interactAction: {fileID: -5739609427293686705, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
 --- !u!1 &158677924
 GameObject:
   m_ObjectHideFlags: 0
@@ -932,8 +962,6 @@ MonoBehaviour:
   canGoBackwards: 0
   maxFuel: 300
   currentFuel: 0
-  lBoosterEffect: {fileID: 0}
-  rBoosterEffect: {fileID: 0}
 --- !u!95 &324098787
 Animator:
   serializedVersion: 7

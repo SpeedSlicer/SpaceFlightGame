@@ -11,4 +11,17 @@ public class DialogueObject : MonoBehaviour
     [SerializeField]
     string[] currentNames = new string[0];
 
+    public string[] GetLines()
+    {
+        return currentLines;
+    }
+    public Sprite[] GetSprites()
+    {
+        return currentSprites;
+    }
+    public string[] GetNames()
+    {
+        return currentNames;
+    }
+
 }

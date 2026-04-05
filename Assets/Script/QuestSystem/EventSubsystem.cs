@@ -1,14 +1,12 @@
 using UnityEngine;
 
-public class QuestNode : MonoBehaviour
+public class EventSubsystem : MonoBehaviour
 {
-    
     void Start()
     {
         
     }
 
-    
     void Update()
     {
         
