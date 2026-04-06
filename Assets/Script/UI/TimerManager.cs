@@ -28,7 +28,7 @@ public class TimerManager : MonoBehaviour
 
     public void SetTimer(double time)
     {
-        nextTimeCountdown = Time.time + time;
+        nextTimeCountdown = time;
         disabled = false;
     }
 

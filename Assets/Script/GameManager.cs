@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -5,6 +6,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject interactGO;
 
+    [SerializeField]
+    TextMeshProUGUI interactText;
     static int npcID = 0;
 
     [SerializeField]
@@ -16,6 +19,7 @@ public class GameManager : MonoBehaviour
     {
         SetInteractActive(false);
         currentQuestSystem.StartQuest();
+        interactText.text = "Press E to Interact";
     }
 
     void Update() { }

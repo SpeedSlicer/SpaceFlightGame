@@ -49,8 +49,9 @@ public class NPC : MonoBehaviour
     {
         if (questSystem != null)
         {
+            gm.SetInteractActive(false);
+            canInteract = false;
             bool wasQuestActive = await questSystem.IsNPCNodeActive(npcID);
-
             if (!wasQuestActive && defaultDialogueObject != null)
             {
                 dialogueController.Speak(defaultDialogueObject);

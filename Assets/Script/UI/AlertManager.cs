@@ -59,10 +59,14 @@ public class AlertManager : MonoBehaviour
     [SerializeField]
     Sprite correct;
 
+    [SerializeField]
+    Sprite info;
+
     public enum AlertType
     {
         Warning,
         Correct,
+        Info,
     }
 
     CanvasGroup _outerGroup;
@@ -70,8 +74,10 @@ public class AlertManager : MonoBehaviour
     RectTransform _outerRect;
     RectTransform _innerRect;
     Coroutine _dismissCoroutine;
+
     [SerializeField]
     InputActionReference testInput;
+
     void Awake()
     {
         _outerRect = outerPanel.GetComponent<RectTransform>();
@@ -82,7 +88,7 @@ public class AlertManager : MonoBehaviour
 
         SetHiddenState();
     }
-    
+
     public void SendAlert(
         float displayTime,
         string alertTitle,
@@ -123,6 +129,8 @@ public class AlertManager : MonoBehaviour
                 return warning;
             case AlertType.Correct:
                 return correct;
+            case AlertType.Info:
+                return info;
             default:
                 return correct;
         }

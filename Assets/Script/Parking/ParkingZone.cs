@@ -5,6 +5,7 @@ public class ParkingZone : MonoBehaviour
 {
     [SerializeField]
     bool playerInZone = false;
+    double lastLeaveTime = 0;
 
     void Start() { }
 
@@ -14,8 +15,7 @@ public class ParkingZone : MonoBehaviour
         {
             var zoneBounds = this.gameObject.GetComponent<BoxCollider2D>().bounds;
 
-            playerInZone =
-                zoneBounds.Contains(collision.bounds.center);
+            playerInZone = zoneBounds.Contains(collision.bounds.center);
         }
     }
 
@@ -24,7 +24,13 @@ public class ParkingZone : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             playerInZone = false;
+            lastLeaveTime = Time.timeAsDouble;
         }
+    }
+
+    public bool LeftNow()
+    {
+        return Time.timeAsDouble - lastLeaveTime < 0.2f;
     }
 
     public bool IsPlayerInZone()

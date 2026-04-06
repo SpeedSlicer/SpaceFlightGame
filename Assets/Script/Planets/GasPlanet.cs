@@ -7,7 +7,7 @@ public class GasPlanet : MonoBehaviour
     PlayerShip playerShip;
 
     [SerializeField]
-    float refuelPerSecond = 10f;
+    float refuelPerSecond = 5f;
     AlertManager alertManager;
     bool hasAlertedFull = false;
 
@@ -42,9 +42,13 @@ public class GasPlanet : MonoBehaviour
                 hasAlertedFull = true;
             }
         }
-        if (!parkingZone.IsPlayerInZone())
+        if (!parkingZone.IsPlayerInZone() && parkingZone.LeftNow())
         {
             hasAlertedFull = false;
+            if (!dialogueController.IsOver())
+            {
+                dialogueController.CancelSpeech();
+            }
         }
     }
 

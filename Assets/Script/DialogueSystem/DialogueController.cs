@@ -77,6 +77,15 @@ public class DialogueController : MonoBehaviour
         SetSpeed(dialogueObject.GetSpeed());
     }
 
+    public void CancelSpeech()
+    {
+        StopAllCoroutines();
+        playerShip.SetFreezePlayer(false);
+        isOver = true;
+        dialoguePanel.SetActive(false);
+        continueBox.LeanMove(outPos, 0.5f).setEaseInOutSine();
+    }
+
     public IEnumerator TextLoop()
     {
         dialoguePanel.SetActive(true);

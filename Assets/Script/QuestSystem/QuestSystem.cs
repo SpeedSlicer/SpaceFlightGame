@@ -25,7 +25,9 @@ public class QuestSystem : MonoBehaviour
             questNodes[j].SetID(j);
             questNodes[j].SetQuestSystem(this);
         }
+        questNodes[index].OnActivate();
     }
+
     // TODO replace spagetti
     void Update()
     {

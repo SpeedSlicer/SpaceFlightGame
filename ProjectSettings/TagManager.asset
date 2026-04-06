@@ -43,6 +43,9 @@ TagManager:
   - name: Star
     uniqueID: 59465995
     locked: 0
+  - name: Line
+    uniqueID: 626939153
+    locked: 0
   - name: Background
     uniqueID: 3846488113
     locked: 0

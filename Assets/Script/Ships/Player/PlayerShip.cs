@@ -7,6 +7,8 @@ public class PlayerShip : Ship
 {
     [Header("Player Movement Settings")]
     public InputActionReference playerMovementVector;
+    public InputActionReference hyperDriveAction;
+
     InputAction movementAction;
     private Vector2 moveInput;
 
@@ -15,6 +17,14 @@ public class PlayerShip : Ship
     public float maxSpeed = 5f;
     public float rotationSpeed = 5f;
     public bool canGoBackwards = false;
+
+    [Header("Hyperdrive Settings")]
+    public float hyperDriveAcceleration = 50f;
+    public float hyperDriveSpeed = 25f;
+    public float hyperDriveRotationSpeed = 0f;
+    public float hyperDriveFuelDepletion = 10f;
+    public bool hyperDriveUnlocked = true;
+    bool hyperDriveActive = false;
 
     [Header("Invincibility Settings")]
     public float invincibilityCooldown = 2f;
@@ -38,6 +48,9 @@ public class PlayerShip : Ship
     float leftTarget = 0f;
     float rightTarget = 0f;
 
+    [Header("Other Settings")]
+    [SerializeField]
+    GameObject packageObject;
     Animator animator;
 
     bool animationOut = false;
@@ -52,7 +65,7 @@ public class PlayerShip : Ship
     void Start()
     {
         base.Start();
-
+        SetPackageEnabled(false);
         animator = gameObject.GetComponent<Animator>();
         currentScaleInvincibility = invincibilityEffectObject.transform.localScale;
         currentFuel = maxFuel;
@@ -62,11 +75,13 @@ public class PlayerShip : Ship
     {
         playerMovementVector.action.Enable();
         movementAction = playerMovementVector.action;
+        hyperDriveAction.action.Enable();
     }
 
     void OnDisable()
     {
         playerMovementVector.action.Disable();
+        hyperDriveAction.action.Disable();
     }
 
     void Update()
@@ -113,7 +128,8 @@ public class PlayerShip : Ship
         {
             moveInput = movementAction.ReadValue<Vector2>();
         }
-
+        hyperDriveActive =
+            hyperDriveAction.action.IsPressed() && currentFuel > 10 && hyperDriveUnlocked;
         HandleMovement();
         HandleRotation();
         UpdateThrusters();
@@ -121,11 +137,17 @@ public class PlayerShip : Ship
 
     private void HandleMovement()
     {
-        currentFuel -= Math.Abs(moveInput.y / 50);
+        currentFuel -=
+            Math.Abs(moveInput.y / 50) * (hyperDriveActive ? hyperDriveFuelDepletion : 1f);
 
         if ((moveInput.magnitude > 0) && (canGoBackwards || moveInput.y > 0))
         {
-            rb.AddRelativeForce(new Vector2(0, moveInput.y * acceleration));
+            rb.AddRelativeForce(
+                new Vector2(
+                    0,
+                    moveInput.y * (hyperDriveActive ? hyperDriveAcceleration : acceleration)
+                )
+            );
             animator.SetBool("Moving", true);
         }
         else
@@ -135,7 +157,8 @@ public class PlayerShip : Ship
 
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
-            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+            rb.linearVelocity =
+                rb.linearVelocity.normalized * (hyperDriveActive ? hyperDriveSpeed : maxSpeed);
         }
     }
 
@@ -143,7 +166,9 @@ public class PlayerShip : Ship
     {
         if (moveInput != Vector2.zero)
         {
-            rb.AddTorque(-moveInput.x * rotationSpeed);
+            rb.AddTorque(
+                -moveInput.x * (hyperDriveActive ? hyperDriveRotationSpeed : rotationSpeed)
+            );
         }
     }
 
@@ -256,5 +281,10 @@ public class PlayerShip : Ship
     public void SetFreezePlayer(bool freeze)
     {
         freezePlayer = freeze;
+    }
+
+    public void SetPackageEnabled(bool enabled)
+    {
+        packageObject.SetActive(enabled);
     }
 }

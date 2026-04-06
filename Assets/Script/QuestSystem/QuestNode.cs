@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class QuestNode : MonoBehaviour
 {
@@ -9,6 +10,37 @@ public class QuestNode : MonoBehaviour
     [Header("Trail Guide")]
     [SerializeField]
     Transform target;
+
+    [Header("Node Initialize Settings")]
+    [SerializeField]
+    bool runActiononActivate = false;
+
+    [SerializeField]
+    UnityEvent actionOnActivate;
+
+    [Header("Node Completion Settings")]
+    [SerializeField]
+    bool runActionOnComplete = false;
+
+    [SerializeField]
+    UnityEvent actionOnComplete;
+
+    [Header("Node-Specific Settings")]
+    [SerializeField]
+    bool verbose = false;
+
+    [Header("Task Tracker Settings")]
+    [SerializeField]
+    QuestPanelManager questPanelManager;
+
+    [SerializeField]
+    string taskTitle = "Task Title";
+
+    [SerializeField]
+    string taskDescription = "Task Description";
+
+    [SerializeField]
+    bool trackTask = true;
 
     void Update()
     {
@@ -38,20 +70,46 @@ public class QuestNode : MonoBehaviour
         return qs.GetCurrentNodeID() == setID;
     }
 
-    public virtual void OnActivate() { }
+    public virtual void OnActivate()
+    {
+        if (verbose)
+        {
+            Debug.Log("Activating node " + setID);
+        }
+        if (trackTask)
+        {
+            questPanelManager.SetText(taskTitle, taskDescription);
+        }
+    }
 
     public virtual bool IsOver()
     {
+        if (verbose)
+        {
+            Debug.Log("Checking if node " + setID + " is over: " + completed);
+        }
         return completed;
     }
 
     public virtual void Complete()
     {
         completed = true;
+        if (verbose)
+        {
+            Debug.Log("Node " + setID + " completed.");
+        }
+        if (runActionOnComplete)
+        {
+            actionOnComplete.Invoke();
+        }
     }
 
     public virtual void ResetNode()
     {
+        if (verbose)
+        {
+            Debug.Log("Resetting node " + setID);
+        }
         completed = false;
     }
 

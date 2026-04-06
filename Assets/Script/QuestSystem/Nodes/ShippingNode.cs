@@ -42,6 +42,7 @@ public class ShippingNode : QuestNode
 
     public override void OnActivate()
     {
+        base.OnActivate();
         if (timed)
         {
             timerManager.SetTimer(timeLimit + Time.timeAsDouble);
