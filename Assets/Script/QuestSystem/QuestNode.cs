@@ -13,7 +13,7 @@ public class QuestNode : MonoBehaviour
 
     [Header("Node Initialize Settings")]
     [SerializeField]
-    bool runActiononActivate = false;
+    bool runActionOnActivate = false;
 
     [SerializeField]
     UnityEvent actionOnActivate;
@@ -27,7 +27,7 @@ public class QuestNode : MonoBehaviour
 
     [Header("Node-Specific Settings")]
     [SerializeField]
-    bool verbose = false;
+    protected bool verbose = false;
 
     [Header("Task Tracker Settings")]
     [SerializeField]
@@ -79,6 +79,10 @@ public class QuestNode : MonoBehaviour
         if (trackTask)
         {
             questPanelManager.SetText(taskTitle, taskDescription);
+        }
+        if (runActionOnActivate)
+        {
+            actionOnActivate.Invoke();
         }
     }
 

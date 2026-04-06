@@ -1,33 +1,37 @@
-using System.Threading.Tasks;
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class DialogueUnpromptedNode : QuestNode
 {
     [SerializeField]
-    DialogueController dialogueController;
+    private DialogueController dialogueController;
 
     [SerializeField]
-    DialogueObject dialogueObject;
+    private DialogueObject dialogueObject;
 
     public override void OnActivate()
     {
         base.OnActivate();
-        Task.Run(async () => await TaskAsync());
-        Complete();
+        StartCoroutine(RunDialogue());
     }
 
-    public async Task<bool> TaskAsync()
+    private IEnumerator RunDialogue()
     {
         dialogueController.Speak(dialogueObject);
-
+        if (verbose)
+        {
+            Debug.Log("Started unprompted dialogue");
+        }
         while (!dialogueController.IsOver())
         {
-            await Task.Yield();
+            if (verbose)
+            {
+                Debug.Log("Tick");
+            }
+            yield return null;
         }
-        return true;
+
+        Complete();
     }
-
-    void Start() { }
-
-    void Update() { }
 }

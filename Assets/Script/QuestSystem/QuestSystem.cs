@@ -25,6 +25,7 @@ public class QuestSystem : MonoBehaviour
             questNodes[j].SetID(j);
             questNodes[j].SetQuestSystem(this);
         }
+        lineTargetFollower.SetActive(true);
         questNodes[index].OnActivate();
     }
 

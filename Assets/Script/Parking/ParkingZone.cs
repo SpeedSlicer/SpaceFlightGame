@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics.Geometry;
 using UnityEngine;
 
@@ -30,7 +31,11 @@ public class ParkingZone : MonoBehaviour
 
     public bool LeftNow()
     {
-        return Time.timeAsDouble - lastLeaveTime < 0.2f;
+        if (lastLeaveTime != 0)
+        {
+            return Time.timeAsDouble - lastLeaveTime < 0.01f;
+        }
+        return false;
     }
 
     public bool IsPlayerInZone()

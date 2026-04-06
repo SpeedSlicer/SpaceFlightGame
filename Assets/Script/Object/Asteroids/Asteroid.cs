@@ -3,14 +3,20 @@ using UnityEngine;
 public class Asteroid : MonoBehaviour
 {
     public float damageAmount = 2f;
-    [SerializeField ]
+
+    [SerializeField]
     ParticleSystem ps;
+
+    [SerializeField]
+    bool destroyOnCollision = false;
+
     void Start()
     {
         ps.Pause();
         var em = ps.emission;
         em.enabled = false;
     }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         Damageable damage = collision.gameObject.GetComponent<Damageable>();
@@ -21,8 +27,11 @@ public class Asteroid : MonoBehaviour
 
             em.enabled = true;
             ps.Play();
-            this.GetComponent<SpriteRenderer>().enabled = false;
-            Destroy(gameObject, ps.main.duration);
+            if (destroyOnCollision)
+            {
+                this.GetComponent<SpriteRenderer>().enabled = false;
+                Destroy(gameObject, ps.main.duration);
+            }
         }
     }
 }

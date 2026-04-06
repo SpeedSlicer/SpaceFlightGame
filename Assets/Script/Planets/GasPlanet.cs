@@ -42,13 +42,9 @@ public class GasPlanet : MonoBehaviour
                 hasAlertedFull = true;
             }
         }
-        if (!parkingZone.IsPlayerInZone() && parkingZone.LeftNow())
+        else if (!parkingZone.IsPlayerInZone())
         {
             hasAlertedFull = false;
-            if (!dialogueController.IsOver())
-            {
-                dialogueController.CancelSpeech();
-            }
         }
     }
 

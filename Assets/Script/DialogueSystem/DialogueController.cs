@@ -63,6 +63,7 @@ public class DialogueController : MonoBehaviour
     {
         if (!isOver)
             return;
+
         currentNames = names;
         isOver = false;
         currentLines = lines;
