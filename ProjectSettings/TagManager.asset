@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Asteroid
+  - AlertManager
   layers:
   - Default
   - TransparentFX
@@ -39,6 +40,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Star
+    uniqueID: 59465995
+    locked: 0
   - name: Background
     uniqueID: 3846488113
     locked: 0

@@ -1,22 +1,28 @@
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Linq;
-using System;
+using TMPro;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
 public class DialogueController : MonoBehaviour
 {
     [SerializeField]
     GameObject dialoguePanel;
+
     [SerializeField]
     TextMeshProUGUI titleText;
+
     [SerializeField]
     TextMeshProUGUI spokenText;
+
     [SerializeField]
     Image image;
+
     [SerializeField]
-    float letterSpeed = 0.3f;
+    float defaultSpeed = 0.3f;
+
     [SerializeField]
     float waitTime = 5f;
 
@@ -25,40 +31,56 @@ public class DialogueController : MonoBehaviour
     string[] currentNames = new string[0];
     bool isOver = true;
 
-    [SerializeField] 
+    [SerializeField]
     RectTransform continueBox;
+
     [SerializeField]
     InputActionReference continueAction;
-    Vector3 inPos, outPos;
+
+    [SerializeField]
+    PlayerShip playerShip;
+    Vector3 inPos,
+        outPos;
+    float letterSpeed = 0.1f;
+
     void Start()
     {
         dialoguePanel.SetActive(false);
         outPos = continueBox.anchoredPosition;
         inPos = new Vector3(outPos.x - continueBox.rect.width, outPos.y, outPos.z);
+        playerShip = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerShip>();
+        letterSpeed = defaultSpeed;
     }
 
-    void Update()
-    {
-
-    }
+    void Update() { }
 
     public bool IsOver()
     {
         return isOver;
     }
+
     public void Speak(string[] lines, Sprite[] sprites, string[] names)
     {
+        if (!isOver)
+            return;
         currentNames = names;
         isOver = false;
         currentLines = lines;
         currentSprites = sprites;
         StartCoroutine(TextLoop());
+        SetSpeed(defaultSpeed);
+    }
+
+    public void Speak(DialogueObject dialogueObject)
+    {
+        Speak(dialogueObject.GetLines(), dialogueObject.GetSprites(), dialogueObject.GetNames());
+        SetSpeed(dialogueObject.GetSpeed());
     }
 
     public IEnumerator TextLoop()
     {
         dialoguePanel.SetActive(true);
-
+        playerShip.SetFreezePlayer(true);
         for (int i = 0; i < currentLines.Length; i++)
         {
             continueBox.LeanMove(outPos, 0.5f).setEaseInOutSine();
@@ -76,10 +98,18 @@ public class DialogueController : MonoBehaviour
                     yield return new WaitForSeconds(letterSpeed);
             }
             continueBox.LeanMove(inPos, 0.5f).setEaseInOutSine();
+
+            yield return new WaitForSeconds(0.5f);
             yield return new WaitUntil(() => continueAction.action.triggered);
         }
-
+        playerShip.SetFreezePlayer(false);
         isOver = true;
         dialoguePanel.SetActive(false);
+        continueBox.LeanMove(outPos, 0.5f).setEaseInOutSine();
+    }
+
+    public void SetSpeed(float newSpeed)
+    {
+        letterSpeed = newSpeed;
     }
 }

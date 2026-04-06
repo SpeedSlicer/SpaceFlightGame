@@ -4,21 +4,48 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     GameObject interactGO;
+
+    static int npcID = 0;
+
+    [SerializeField]
+    QuestSystem currentQuestSystem;
+
+    private static float coins = 0;
+
     void Start()
     {
         SetInteractActive(false);
+        currentQuestSystem.StartQuest();
     }
 
-    void Update()
-    {
+    void Update() { }
 
-    }
     public void SetInteractActive(bool interact)
     {
         interactGO.transform.LeanScale(
-            interact ? 
-            new Vector3(0.35f, 0.35f, 0.35f) :
-            new Vector3(0, 0, 0), 
-        0.2f);
+            interact ? new Vector3(0.35f, 0.35f, 0.35f) : new Vector3(0, 0, 0),
+            0.2f
+        );
+    }
+
+    public static int GetNewNPCID()
+    {
+        npcID++;
+        return npcID;
+    }
+
+    public static float GetCoins()
+    {
+        return coins;
+    }
+
+    public static void AddCoins(float amount)
+    {
+        coins += amount;
+    }
+
+    public static void RemoveCoins(float amount)
+    {
+        coins -= amount;
     }
 }

@@ -14,6 +14,7 @@ public class PlayerShip : Ship
     public float acceleration = 10f;
     public float maxSpeed = 5f;
     public float rotationSpeed = 5f;
+    public bool canGoBackwards = false;
 
     [Header("Invincibility Settings")]
     public float invincibilityCooldown = 2f;
@@ -22,20 +23,31 @@ public class PlayerShip : Ship
     public GameObject invincibilityEffectObject;
     public float invincibilityTransformExtra = 0.5f;
 
-    public bool canGoBackwards = false;
-
     [Header("Fuel")]
     public float maxFuel = 5000;
     public float currentFuel = 0;
+
+    [Header("Thruster Particles")]
+    public ParticleSystem leftThruster;
+    public ParticleSystem rightThruster;
+    public float particleSmoothSpeed = 5f;
+    public float thresholdWarning = 20;
+    public float thresholdWait = 5;
+    float leftSmooth = 0f;
+    float rightSmooth = 0f;
+    float leftTarget = 0f;
+    float rightTarget = 0f;
 
     Animator animator;
 
     bool animationOut = false;
     Vector2 currentScaleInvincibility;
 
-    
-    float leftSmooth = 0f;
-    float rightSmooth = 0f;
+    [SerializeField]
+    AlertManager alertManager;
+    bool canWarn = true;
+
+    public bool freezePlayer = false;
 
     void Start()
     {
@@ -75,14 +87,36 @@ public class PlayerShip : Ship
                 StartCoroutine(InvincibilityAnimationDown());
             }
         }
+        if (currentFuel / maxFuel < thresholdWarning / 100f && canWarn)
+        {
+            alertManager.SendAlert(
+                thresholdWait,
+                "Low Fuel",
+                "Your fuel is running low. Find a fuel station to refuel.",
+                AlertManager.AlertType.Warning
+            );
+            canWarn = false;
+        }
+        if (currentFuel / maxFuel >= thresholdWarning / 100f && !canWarn)
+        {
+            canWarn = true;
+        }
     }
 
     void FixedUpdate()
     {
-        moveInput = movementAction.ReadValue<Vector2>();
+        if (freezePlayer)
+        {
+            moveInput = Vector2.zero;
+        }
+        else
+        {
+            moveInput = movementAction.ReadValue<Vector2>();
+        }
 
         HandleMovement();
         HandleRotation();
+        UpdateThrusters();
     }
 
     private void HandleMovement()
@@ -113,6 +147,67 @@ public class PlayerShip : Ship
         }
     }
 
+    private void UpdateThrusters()
+    {
+        float forward = moveInput.y;
+        float turn = moveInput.x;
+
+        leftTarget = 0f;
+        rightTarget = 0f;
+
+        if (Mathf.Abs(forward) > 0.1f)
+        {
+            float power = Mathf.Abs(forward);
+            leftTarget = power;
+            rightTarget = power;
+        }
+
+        if (Mathf.Abs(turn) > 0.1f)
+        {
+            float power = Mathf.Abs(turn);
+
+            if (turn > 0)
+            {
+                leftTarget = Mathf.Max(leftTarget, power);
+            }
+            else
+            {
+                rightTarget = Mathf.Max(rightTarget, power);
+            }
+        }
+
+        float speedFactor = rb.linearVelocity.magnitude / maxSpeed;
+        leftTarget *= speedFactor;
+        rightTarget *= speedFactor;
+
+        leftSmooth = Mathf.Lerp(leftSmooth, leftTarget, Time.fixedDeltaTime * particleSmoothSpeed);
+        rightSmooth = Mathf.Lerp(
+            rightSmooth,
+            rightTarget,
+            Time.fixedDeltaTime * particleSmoothSpeed
+        );
+
+        ApplyThruster(leftThruster, leftSmooth);
+        ApplyThruster(rightThruster, rightSmooth);
+    }
+
+    private void ApplyThruster(ParticleSystem ps, float strength)
+    {
+        var emission = ps.emission;
+
+        if (strength > 0.05f)
+        {
+            if (!ps.isPlaying)
+                ps.Play();
+
+            emission.rateOverTime = 60f * strength;
+        }
+        else
+        {
+            ps.Stop();
+        }
+    }
+
     public override bool Damage(float amount, string source)
     {
         if (!currentlyInvincible)
@@ -130,7 +225,13 @@ public class PlayerShip : Ship
         return false;
     }
 
+    public void Refuel(float amount)
+    {
+        currentFuel = Mathf.Min(currentFuel + amount, maxFuel);
+    }
+
     public float GetFuel() => currentFuel;
+
     public float GetMaxFuel() => maxFuel;
 
     IEnumerator InvincibilityCooldown()
@@ -150,5 +251,10 @@ public class PlayerShip : Ship
         );
 
         animationOut = false;
+    }
+
+    public void SetFreezePlayer(bool freeze)
+    {
+        freezePlayer = freeze;
     }
 }

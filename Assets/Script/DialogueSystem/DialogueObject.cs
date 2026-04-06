@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DialogueObject : MonoBehaviour
@@ -11,17 +12,26 @@ public class DialogueObject : MonoBehaviour
     [SerializeField]
     string[] currentNames = new string[0];
 
+    [SerializeField]
+    float speed = 0.1f;
+
     public string[] GetLines()
     {
         return currentLines;
     }
+
     public Sprite[] GetSprites()
     {
         return currentSprites;
     }
+
     public string[] GetNames()
     {
         return currentNames;
     }
 
+    public float GetSpeed()
+    {
+        return speed;
+    }
 }
