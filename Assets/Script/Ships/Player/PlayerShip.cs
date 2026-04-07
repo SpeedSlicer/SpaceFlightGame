@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -62,6 +63,13 @@ public class PlayerShip : Ship
 
     public bool freezePlayer = false;
 
+    [SerializeField]
+    SceneTransition sceneTransition;
+
+    [SerializeField]
+    float endGameSeconds = 2f;
+    bool endTrigger = false;
+
     void Start()
     {
         base.Start();
@@ -115,6 +123,34 @@ public class PlayerShip : Ship
         if (currentFuel / maxFuel >= thresholdWarning / 100f && !canWarn)
         {
             canWarn = true;
+        }
+        if (currentFuel <= 0 && !endTrigger)
+        {
+            alertManager.SendAlert(
+                endGameSeconds,
+                "No Fuel",
+                "You have no more fuel. It is over for you. ",
+                AlertManager.AlertType.Warning
+            );
+            endTrigger = true;
+            SetFreezePlayer(true);
+            rb.linearVelocity = new Vector2(0, 0);
+
+            sceneTransition.NextScene("Lobby", endGameSeconds);
+        }
+        else if (GetHealth() <= 0 && !endTrigger)
+        {
+            alertManager.SendAlert(
+                endGameSeconds,
+                "Ship Destroyed",
+                "The health of your ship has reached 0. ",
+                AlertManager.AlertType.Warning
+            );
+            SetFreezePlayer(true);
+            endTrigger = true;
+            rb.linearVelocity = new Vector2(0, 0);
+
+            sceneTransition.NextScene("Lobby", endGameSeconds);
         }
     }
 

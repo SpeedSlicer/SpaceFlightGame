@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     QuestSystem currentQuestSystem;
 
     private static float coins = 0;
+    public static int starAmount = 0;
+    public static float rewardAmount = 0;
 
     void Start()
     {

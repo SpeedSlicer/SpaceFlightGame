@@ -41,6 +41,7 @@ public class GasPlanet : MonoBehaviour
                 );
                 hasAlertedFull = true;
             }
+            playerShip.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         }
         else if (!parkingZone.IsPlayerInZone())
         {

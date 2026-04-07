@@ -8,6 +8,9 @@ public class NPC : MonoBehaviour
     bool canInteract = false;
 
     [SerializeField]
+    bool disableInteractDuringDialogue = true;
+
+    [SerializeField]
     GameManager gm;
 
     [SerializeField]
@@ -59,14 +62,14 @@ public class NPC : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && dialogueController.IsOver())
         {
             if (gm != null)
             {
-                gm.SetInteractActive(true);
                 canInteract = true;
+                gm.SetInteractActive(true);
             }
         }
     }

@@ -43,6 +43,9 @@ public class DialogueController : MonoBehaviour
         outPos;
     float letterSpeed = 0.1f;
 
+    [SerializeField]
+    AsteroidSpawner spawner;
+
     void Start()
     {
         dialoguePanel.SetActive(false);
@@ -85,10 +88,19 @@ public class DialogueController : MonoBehaviour
         isOver = true;
         dialoguePanel.SetActive(false);
         continueBox.LeanMove(outPos, 0.5f).setEaseInOutSine();
+        if (spawner != null)
+        {
+            spawner.Enable();
+        }
     }
 
     public IEnumerator TextLoop()
     {
+        if (spawner != null)
+        {
+            spawner.Disable();
+        }
+
         dialoguePanel.SetActive(true);
         playerShip.SetFreezePlayer(true);
         for (int i = 0; i < currentLines.Length; i++)
@@ -116,6 +128,10 @@ public class DialogueController : MonoBehaviour
         isOver = true;
         dialoguePanel.SetActive(false);
         continueBox.LeanMove(outPos, 0.5f).setEaseInOutSine();
+        if (spawner != null)
+        {
+            spawner.Enable();
+        }
     }
 
     public void SetSpeed(float newSpeed)

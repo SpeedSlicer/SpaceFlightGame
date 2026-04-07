@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class QuestSystem : MonoBehaviour
@@ -17,6 +18,9 @@ public class QuestSystem : MonoBehaviour
 
     [SerializeField]
     bool started = false;
+
+    [SerializeField]
+    TextMeshProUGUI taskLeftText;
 
     void Start()
     {
@@ -55,6 +59,10 @@ public class QuestSystem : MonoBehaviour
                     questNodes[index].OnActivate();
                 }
             }
+        }
+        if (taskLeftText != null)
+        {
+            taskLeftText.text = $"{index + 1} / {questNodes.Length}";
         }
     }
 
