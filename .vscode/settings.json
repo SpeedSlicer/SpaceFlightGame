@@ -67,6 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "SpaceFlightGame.slnx",
+    "dotnet.defaultSolution": "SpaceFlight2d.slnx",
     "dotnet.enableWorkspaceBasedDevelopment": false
 }

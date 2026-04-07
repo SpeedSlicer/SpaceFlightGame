@@ -1081,7 +1081,7 @@ MonoBehaviour:
   hoverTime: 0.2
   pressTime: 0.08
   normalColor: {r: 0.80392164, g: 0.80392164, b: 0.80392164, a: 1}
-  hoverColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
+  hoverColor: {r: 0.80392164, g: 0.80392164, b: 0.80392164, a: 1}
 --- !u!1 &1115739534
 GameObject:
   m_ObjectHideFlags: 0

@@ -3892,7 +3892,7 @@ MonoBehaviour:
   trackTask: 1
   sceneManager: {fileID: 314982119}
   timer: {fileID: 189336768}
-  goalTime5Star: 50
+  goalTime5Star: 100
   currencyAmount:
   - 1
   - 3

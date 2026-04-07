@@ -204,7 +204,7 @@ ParticleSystem:
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  emitterVelocityMode: 1
+  emitterVelocityMode: 0
   looping: 1
   prewarm: 0
   playOnAwake: 1
@@ -761,7 +761,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 1
-    maxNumParticles: 1000
+    maxNumParticles: 40
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -5870,7 +5870,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 1
-    maxNumParticles: 1000
+    maxNumParticles: 40
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -10130,7 +10130,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6335234470796939649}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.70781857, w: 0.7063944}
+  m_LocalRotation: {x: 0, y: 0, z: -0.707816, w: 0.7063969}
   m_LocalPosition: {x: 10.090004, y: -0.12949371, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10229,7 +10229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerShip
   damageableTags:
   - Asteroid
-  initialhealth: 5
+  initialhealth: 20
   playerMovementVector: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   hyperDriveAction: {fileID: -5887163487331130226, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   acceleration: 23.8
