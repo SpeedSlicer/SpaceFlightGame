@@ -21,7 +21,7 @@ public class SpaceButtonTween
     public Color normalColor = Color.white;
     public Color hoverColor = new Color(0.7f, 0.85f, 1f);
 
-    private bool locked = false; // 👈 NEW
+    private bool locked = false; 
 
     void Start()
     {
@@ -29,14 +29,12 @@ public class SpaceButtonTween
         img = GetComponent<Image>();
     }
 
-    // 👉 Call this before your reward animation
     public void LockTween()
     {
         locked = true;
         LeanTween.cancel(gameObject);
     }
 
-    // 👉 Optional unlock if needed later
     public void UnlockTween()
     {
         locked = false;
