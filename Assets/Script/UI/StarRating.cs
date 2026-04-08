@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,14 +27,16 @@ public class StarRewardUI : MonoBehaviour
     [Header("Continue Button")]
     public GameObject continueButton;
 
+    [Header("Time Text")]
+    public TextMeshProUGUI currentTime;
+    public TextMeshProUGUI bestTime;
+    public float appearTime = 0.5f;
+
     void Start()
     {
-        UpdateVisuals();
-        SetRating(GameManager.starAmount);
-        fullText = $"+ {GameManager.rewardAmount} Coins";
-        GameManager.AddCoins(GameManager.rewardAmount);
-        continueButton.transform.localScale = Vector2.zero;
-        ConfirmRating();
+        currentTime.text = "";
+        bestTime.text = "";
+        StartCoroutine(textEffect());
     }
 
     public void SetRating(int rating)
@@ -51,6 +55,20 @@ public class StarRewardUI : MonoBehaviour
 
         currentRating = 0;
         UpdateVisuals();
+    }
+
+    IEnumerator textEffect()
+    {
+        yield return new WaitForSeconds(appearTime);
+        currentTime.text = $"{Math.Round(GameManager.time * 100) / 100}s";
+        yield return new WaitForSeconds(appearTime);
+        bestTime.text = $"{Math.Round(GameManager.maxLevelTimes[GameManager.level] * 100) / 100}s";
+        UpdateVisuals();
+        SetRating(GameManager.starAmount);
+        fullText = $"+ {GameManager.rewardAmount} Coins";
+        GameManager.AddCoins(GameManager.rewardAmount);
+        continueButton.transform.localScale = Vector2.zero;
+        ConfirmRating();
     }
 
     void UpdateVisuals()
@@ -117,7 +135,7 @@ public class StarRewardUI : MonoBehaviour
                 .setDelay(delay + 0.26f)
                 .setEase(LeanTweenType.easeInOutQuad);
 
-            rt.localRotation = Quaternion.Euler(0, 0, Random.Range(-15f, 15f));
+            rt.localRotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-15f, 15f));
             LeanTween
                 .rotateZ(star, 0f, 0.25f)
                 .setDelay(delay + 0.08f)

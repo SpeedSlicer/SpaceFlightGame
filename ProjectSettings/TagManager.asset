@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Asteroid
   - AlertManager
+  - GasPlanet
+  - MainMusic
   layers:
   - Default
   - TransparentFX

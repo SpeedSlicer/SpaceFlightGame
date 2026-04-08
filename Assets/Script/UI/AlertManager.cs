@@ -61,6 +61,7 @@ public class AlertManager : MonoBehaviour
 
     [SerializeField]
     Sprite info;
+    bool lockAlert = false;
 
     public enum AlertType
     {
@@ -96,6 +97,8 @@ public class AlertManager : MonoBehaviour
         Sprite alertSprite
     )
     {
+        if (lockAlert)
+            return;
         if (_dismissCoroutine != null)
             StopCoroutine(_dismissCoroutine);
 
@@ -219,5 +222,10 @@ public class AlertManager : MonoBehaviour
     {
         T comp = go.GetComponent<T>();
         return comp != null ? comp : go.AddComponent<T>();
+    }
+
+    public void LockAlert()
+    {
+        lockAlert = true;
     }
 }

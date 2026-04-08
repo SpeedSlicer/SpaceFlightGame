@@ -129,9 +129,10 @@ public class PlayerShip : Ship
             alertManager.SendAlert(
                 endGameSeconds,
                 "No Fuel",
-                "You have no more fuel. It is over for you. ",
+                "You have no more fuel. You are stuck. ",
                 AlertManager.AlertType.Warning
             );
+            alertManager.LockAlert();
             endTrigger = true;
             SetFreezePlayer(true);
             rb.linearVelocity = new Vector2(0, 0);
@@ -146,6 +147,7 @@ public class PlayerShip : Ship
                 "The health of your ship has reached 0. ",
                 AlertManager.AlertType.Warning
             );
+            alertManager.LockAlert();
             SetFreezePlayer(true);
             endTrigger = true;
             rb.linearVelocity = new Vector2(0, 0);

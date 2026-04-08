@@ -70,6 +70,11 @@ public class QuestNode : MonoBehaviour
         return qs.GetCurrentNodeID() == setID;
     }
 
+    public void SetTarget(Transform setTarget)
+    {
+        target = setTarget;
+    }
+
     public virtual void OnActivate()
     {
         if (verbose)
@@ -78,7 +83,14 @@ public class QuestNode : MonoBehaviour
         }
         if (trackTask)
         {
-            questPanelManager.SetText(taskTitle, taskDescription);
+            if (questPanelManager == null)
+            {
+                Debug.LogWarning("Quest Node " + gameObject.name + " not connected to manager");
+            }
+            else
+            {
+                questPanelManager.SetText(taskTitle, taskDescription);
+            }
         }
         if (runActionOnActivate)
         {

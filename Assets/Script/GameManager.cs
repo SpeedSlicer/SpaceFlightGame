@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -16,6 +17,15 @@ public class GameManager : MonoBehaviour
     private static float coins = 0;
     public static int starAmount = 0;
     public static float rewardAmount = 0;
+    public static float time = 0;
+    public static int level = 0;
+    public static float[] maxLevelTimes = new float[]
+    {
+        float.PositiveInfinity,
+        float.PositiveInfinity,
+        float.PositiveInfinity,
+        float.PositiveInfinity,
+    };
 
     void Start()
     {
@@ -28,10 +38,13 @@ public class GameManager : MonoBehaviour
 
     public void SetInteractActive(bool interact)
     {
-        interactGO.transform.LeanScale(
-            interact ? new Vector3(0.35f, 0.35f, 0.35f) : new Vector3(0, 0, 0),
-            0.2f
-        );
+        if (interactGO != null)
+        {
+            interactGO.transform.LeanScale(
+                interact ? new Vector3(0.35f, 0.35f, 0.35f) : new Vector3(0, 0, 0),
+                0.2f
+            );
+        }
     }
 
     public static int GetNewNPCID()

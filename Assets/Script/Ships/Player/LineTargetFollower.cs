@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,6 +15,15 @@ public class LineTargetFollower : MonoBehaviour
 
     bool active = false;
 
+    [SerializeField]
+    bool isDistanceCounter = false;
+
+    [SerializeField]
+    TextMeshProUGUI distanceCounter;
+
+    [SerializeField]
+    bool alwaysActive = false;
+
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -21,15 +31,21 @@ public class LineTargetFollower : MonoBehaviour
 
     void Update()
     {
-        if (active)
+        if (active || alwaysActive)
         {
             lineRenderer.SetPosition(0, player.position);
             lineRenderer.SetPosition(1, target.position);
+            if (isDistanceCounter)
+            {
+                distanceCounter.text =
+                    $"{Math.Round((target.position - player.position).sqrMagnitude)}m";
+            }
         }
         else
         {
             lineRenderer.SetPosition(0, player.position);
             lineRenderer.SetPosition(1, player.position);
+            distanceCounter.text = $"None";
         }
     }
 

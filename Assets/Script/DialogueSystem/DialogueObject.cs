@@ -15,6 +15,13 @@ public class DialogueObject : MonoBehaviour
     [SerializeField]
     float speed = 0.1f;
 
+    public DialogueObject(string[] currentLines, Sprite[] currentSprites, string[] currentNames)
+    {
+        
+        this.currentLines = currentLines;
+        this.currentSprites = currentSprites;
+        this.currentNames = currentNames;
+    }
     public string[] GetLines()
     {
         return currentLines;

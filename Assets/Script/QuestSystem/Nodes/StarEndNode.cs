@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class StarEndNode : QuestNode
@@ -15,12 +16,20 @@ public class StarEndNode : QuestNode
 
     int stars;
 
+    [SerializeField]
+    LevelConfig level;
+
     public override void OnActivate()
     {
         base.OnActivate();
         stars = CalculateStars();
         Debug.Log("Stars earned: " + stars);
-        sceneManager.StarScene(stars, currencyAmount[stars]);
+        sceneManager.StarScene(
+            stars,
+            currencyAmount[stars - 1],
+            (float)(Time.timeAsDouble - timer.GetStartTime()),
+            level.GetLevelID()
+        );
     }
 
     public override void UpdateConditions() { }

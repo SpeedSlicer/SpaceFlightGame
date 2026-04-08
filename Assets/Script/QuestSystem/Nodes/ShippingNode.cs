@@ -4,7 +4,7 @@ using UnityEngine;
 public class ShippingNode : QuestNode
 {
     [SerializeField]
-    ParkingZone parkingZone;
+    public ParkingZone parkingZone;
 
     [SerializeField]
     AlertManager alertManager;
@@ -13,32 +13,32 @@ public class ShippingNode : QuestNode
     DialogueController dialogueController;
 
     [SerializeField]
-    DialogueObject dialogueObject;
+    public DialogueObject dialogueObject;
 
     [SerializeField]
-    DialogueObject angryDialogueObject;
+    public DialogueObject angryDialogueObject;
 
     [SerializeField]
-    bool thanks = false;
+    bool thanks = true;
 
     [SerializeField]
-    bool timed = false;
+    bool timed = true;
 
     [SerializeField]
-    float timeLimit = 10f;
+    public float timeLimit = 10f;
     bool begin = false;
 
     [SerializeField]
     TimerManager timerManager;
-
+    // TODO use setters
     [SerializeField]
     bool rewardEnabled = true;
 
     [SerializeField]
-    float moneyReward = 10;
+    public float moneyReward = 10;
 
     [SerializeField]
-    float angryMoneyReward = 5;
+    public float angryMoneyReward = 5;
 
     public override void OnActivate()
     {

@@ -16,6 +16,7 @@ public class FadeController : MonoBehaviour
     [SerializeField]
     float timeSeconds = 0.5f;
 
+
     void Start()
     {
         img = fadeObject.GetComponent<Image>();
