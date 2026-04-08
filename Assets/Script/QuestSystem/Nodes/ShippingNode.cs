@@ -30,6 +30,7 @@ public class ShippingNode : QuestNode
 
     [SerializeField]
     TimerManager timerManager;
+
     // TODO use setters
     [SerializeField]
     bool rewardEnabled = true;
@@ -40,9 +41,12 @@ public class ShippingNode : QuestNode
     [SerializeField]
     public float angryMoneyReward = 5;
 
+    GameObject playerObject;
+
     public override void OnActivate()
     {
         base.OnActivate();
+        playerObject = GameObject.FindGameObjectWithTag("Player");
         if (timed)
         {
             timerManager.SetTimer(timeLimit + Time.timeAsDouble);
@@ -74,6 +78,7 @@ public class ShippingNode : QuestNode
                         if (rewardEnabled)
                         {
                             GameManager.AddCoins(angryMoneyReward);
+                            playerObject.GetComponent<AudioSource>().Play();
                         }
                     }
                     else
@@ -82,6 +87,7 @@ public class ShippingNode : QuestNode
                         if (rewardEnabled)
                         {
                             GameManager.AddCoins(moneyReward);
+                            playerObject.GetComponent<AudioSource>().Play();
                         }
                     }
                 }
@@ -91,6 +97,7 @@ public class ShippingNode : QuestNode
                     if (rewardEnabled)
                     {
                         GameManager.AddCoins(moneyReward);
+                        playerObject.GetComponent<AudioSource>().Play();
                     }
                 }
             }
@@ -99,6 +106,7 @@ public class ShippingNode : QuestNode
                 if (rewardEnabled)
                 {
                     GameManager.AddCoins(moneyReward);
+                    playerObject.GetComponent<AudioSource>().Play();
                 }
             }
             Complete();

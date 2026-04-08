@@ -23,8 +23,11 @@ public class ShipCustomizer : MonoBehaviour
         {
             shipRenderer.color = col;
         }
-        lPS.GetComponent<ParticleSystemRenderer>().material = TrailMatStorage.mat;
-        rPS.GetComponent<ParticleSystemRenderer>().material = TrailMatStorage.mat;
+        if (TrailMatStorage.mat != null)
+        {
+            lPS.GetComponent<ParticleSystemRenderer>().material = TrailMatStorage.mat;
+            rPS.GetComponent<ParticleSystemRenderer>().material = TrailMatStorage.mat;
+        }
     }
 
     public void UpdateSprite()
