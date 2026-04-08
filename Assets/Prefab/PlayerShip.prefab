@@ -10259,7 +10259,7 @@ MonoBehaviour:
   hyperDriveAcceleration: 50
   hyperDriveSpeed: 25
   hyperDriveRotationSpeed: 0
-  hyperDriveFuelDepletion: 10
+  hyperDriveFuelDepletion: 14
   hyperDriveUnlocked: 1
   invincibilityCooldown: 1
   invincibilityAnimationTime: 0.5
